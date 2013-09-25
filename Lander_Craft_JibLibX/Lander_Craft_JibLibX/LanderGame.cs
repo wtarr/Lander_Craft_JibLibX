@@ -37,6 +37,7 @@ namespace Lander_Craft_JibLibX
         private HeightmapObject _map;
         private Model _model;
         private CharacterController _cc;
+        private GameObject rocket;
 
         public LanderGame()
         {
@@ -49,6 +50,8 @@ namespace Lander_Craft_JibLibX
             
             Camera.FarPlane = 10000;
             Camera.NearPlane = 1;
+
+            
         }
 
         private void InitializePhysics()
@@ -86,15 +89,14 @@ namespace Lander_Craft_JibLibX
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            _model = Content.Load<Model>("box");
-            //go.Model = model;
 
+            _model = Content.Load<Model>("rocket");
             _landerPhysicsObject = new BoxObject(this, _model, new Vector3(10, 10, 10), Matrix.Identity, new Vector3(0, 50, 0));
             _cc = new CharacterController();
             _cc.Initialize(_landerPhysicsObject.Body);
-            
-            _surfacePhysicsObj = new BoxObject(this, _model, new Vector3(20, 20, 20), Matrix.Identity, new Vector3(0, -5, 0));
 
+            _model = Content.Load<Model>("box");
+            _surfacePhysicsObj = new BoxObject(this, _model, new Vector3(20, 20, 20), Matrix.Identity, new Vector3(0, -5, 0));
             _surfacePhysicsObj.Body.Immovable = true;  // Update contructor to handle this !!!!!! put body back to being protected
 
             Model terrain = Content.Load<Model>("terrain");

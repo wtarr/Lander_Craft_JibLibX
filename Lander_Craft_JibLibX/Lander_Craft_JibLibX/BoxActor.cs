@@ -22,16 +22,18 @@ namespace Lander_Craft_JibLibX
     /// </summary>
     public class BoxActor : Microsoft.Xna.Framework.DrawableGameComponent
     {
-        private Vector3 position;
-        private Vector3 scale;
+        public Vector3 Position { get; private set; }
+        public Vector3 Scale { get; private set; }
         private Model _landerModel;
-
+        public Body Body { get; private set; }
+        public CollisionSkin Skin { get; private set; }
+        
         public BoxActor(Game game, Vector3 position, Vector3 scale)
             : base(game)
         {
             // TODO: Construct any child components here
-            this.position = position;
-            this.scale = scale;
+            this.Position = position;
+            this.Scale = scale;
 
             Body = new Body();
             Skin = new CollisionSkin(Body);
@@ -44,15 +46,13 @@ namespace Lander_Craft_JibLibX
             Vector3 com = SetMass(1.0f);
 
             Body.MoveTo(position, Matrix.Identity);
-            
+
             Skin.ApplyLocalTransform(new Transform(-com, Matrix.Identity));
             Body.EnableBody();
 
         }
 
-        public Body Body { get; private set; }
 
-        public CollisionSkin Skin { get; private set; }
 
         /// <summary>
         /// Allows the game component to perform any initialization it needs to before starting
@@ -85,7 +85,7 @@ namespace Lander_Craft_JibLibX
         public override void Draw(GameTime gameTime)
         {
             LanderGame game = (LanderGame)this.Game;
-            
+
             Matrix[] tranforms = new Matrix[_landerModel.Bones.Count];
             _landerModel.CopyAbsoluteBoneTransformsTo(tranforms);
 
@@ -97,14 +97,14 @@ namespace Lander_Craft_JibLibX
                 {
                     effect.EnableDefaultLighting();
                     effect.PreferPerPixelLighting = true;
-                    effect.World = tranforms[mesh.ParentBone.Index]*worldMatrix;
+                    effect.World = tranforms[mesh.ParentBone.Index] * worldMatrix;
                     effect.View = Camera.View();
                     effect.Projection = Camera.CameraProjection;
                 }
                 mesh.Draw();
             }
 
-           base.Draw(gameTime);
+            base.Draw(gameTime);
         }
 
         private Vector3 SetMass(float mass)
@@ -129,7 +129,7 @@ namespace Lander_Craft_JibLibX
 
         private Matrix getWorldMatrix()
         {
-            return Matrix.CreateScale(scale)*Skin.GetPrimitiveLocal(0).Transform.Orientation*Body.OldOrientation*
+            return Matrix.CreateScale(Scale) * Skin.GetPrimitiveLocal(0).Transform.Orientation * Body.OldOrientation *
                    Matrix.CreateTranslation(Body.Position);
         }
     }
