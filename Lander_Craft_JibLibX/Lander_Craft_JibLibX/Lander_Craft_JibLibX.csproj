@@ -77,6 +77,8 @@
     <Compile Include="CharacterController.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="HeightMapInfo.cs" />
+    <Compile Include="Particle.cs" />
+    <Compile Include="ParticleManager.cs" />
     <Compile Include="PhysicsObjects\BoxObject.cs" />
     <Compile Include="PhysicsObjects\HeightmapObject.cs" />
     <Compile Include="PhysicsObjects\PhysicObject.cs" />

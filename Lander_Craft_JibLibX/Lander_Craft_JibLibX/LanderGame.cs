@@ -37,7 +37,7 @@ namespace Lander_Craft_JibLibX
         private HeightmapObject _map;
         private Model _model;
         private CharacterController _cc;
-        private GameObject rocket;
+        private SpriteFont font;
 
         public LanderGame()
         {
@@ -104,6 +104,13 @@ namespace Lander_Craft_JibLibX
 
             Camera.AspectRatio = graphics.GraphicsDevice.Viewport.AspectRatio;
 
+            ParticleManager.Initialize(
+                GraphicsDevice,
+                Content.Load<Effect>("Particles"),
+                Content.Load<Texture2D>("Explosion"));
+
+            font = Content.Load<SpriteFont>("Font");
+
         }
 
         /// <summary>
@@ -138,6 +145,13 @@ namespace Lander_Craft_JibLibX
                 _cc.starboard = true;
 
             // TODO: Add your update logic here
+            if (_cc.boost)
+            {
+                ParticleManager.MakeExplosion(_cc.Body.Position , 20);
+            }
+
+            ParticleManager.Update(gameTime);
+
 
             base.Update(gameTime);
 
@@ -156,8 +170,17 @@ namespace Lander_Craft_JibLibX
         protected override void Draw(GameTime gameTime)
         {
             graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
+            spriteBatch.Begin();
+            spriteBatch.DrawString(font, "Boost - Space\nFore RCS - W\nAft RCS -S\nPort RCS - A\nStarboard RCS - D", new Vector2(20, 20), Color.Black);
+            spriteBatch.End();
             
+            GraphicsDevice.BlendState = BlendState.Opaque;
+            GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+            graphics.GraphicsDevice.SetRenderTarget(null);
+
             base.Draw(gameTime);
+            
+            ParticleManager.Draw();
         }
     }
 }
