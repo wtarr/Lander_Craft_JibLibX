@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading;
 using Lander_Craft_JibLibX.PhysicsObjects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
@@ -38,6 +39,7 @@ namespace Lander_Craft_JibLibX
         private Model _model;
         private CharacterController _cc;
         private SpriteFont font;
+        private int _timer = 5;
 
         public LanderGame()
         {
@@ -147,7 +149,15 @@ namespace Lander_Craft_JibLibX
             // TODO: Add your update logic here
             if (_cc.boost)
             {
-                ParticleManager.MakeExplosion(_cc.Body.Position , 20);
+                if (_timer <= 0)
+                {
+                    ParticleManager.MakeExplosion(_cc.Body.Position, 30);
+                    _timer = 5;
+                }
+                else
+                {
+                    _timer--;
+                }
             }
 
             ParticleManager.Update(gameTime);

@@ -119,7 +119,7 @@ namespace Lander_Craft_JibLibX
                                     (((float)rand.NextDouble() * 3f) + 6f);
 
                 AddParticle(
-                    position,
+                    new Vector3(position.X, position.Y-5, position.Z),
                     direction,
                     duration, s);
             }
